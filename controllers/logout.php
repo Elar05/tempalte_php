@@ -1,16 +1,15 @@
 <?php
 
-class Logout extends Controller
+class Logout extends Session
 {
-  public function __construct()
+  public function __construct($url)
   {
-    parent::__construct();
+    parent::__construct($url);
   }
 
   public function render()
   {
-    session_unset();
-    session_destroy();
+    $this->logout();
     $this->redirect('');
   }
 }

@@ -11,7 +11,7 @@ class UsuarioTiposModel extends Model
   public function get($id)
   {
     try {
-      $query = $this->db->connect()->prepare("SELECT * FROM usuarios_tipo WHERE id = ?;");
+      $query = $this->db->connect()->prepare("SELECT * FROM usuario_tipos WHERE id = ?;");
       $query->execute([$id]);
       return $query->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -23,7 +23,7 @@ class UsuarioTiposModel extends Model
   public function getAll()
   {
     try {
-      $query = $this->db->connect()->query("SELECT * FROM usuarios_tipo;");
+      $query = $this->db->connect()->query("SELECT * FROM usuario_tipos;");
       $query->execute();
       return $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -35,7 +35,7 @@ class UsuarioTiposModel extends Model
   public function save($nombre)
   {
     try {
-      $query = $this->db->connect()->prepare("INSERT INTO usuarios_tipo (nombre) VALUES (:nombre);");
+      $query = $this->db->connect()->prepare("INSERT INTO usuario_tipos (nombre) VALUES (:nombre);");
       $query->bindParam(':nombre', $nombre, PDO::PARAM_STR);
       if ($query->execute()) return true;
     } catch (PDOException $e) {
@@ -47,7 +47,7 @@ class UsuarioTiposModel extends Model
   public function update($nombre, $id)
   {
     try {
-      $query = $this->db->connect()->prepare("UPDATE usuarios_tipo SET nombre = :nombre WHERE id = :id;");
+      $query = $this->db->connect()->prepare("UPDATE usuario_tipos SET nombre = :nombre WHERE id = :id;");
       $query->bindParam(':nombre', $nombre, PDO::PARAM_STR);
       $query->bindParam(':id', $id, PDO::PARAM_STR);
       if ($query->execute()) return true;
@@ -60,7 +60,7 @@ class UsuarioTiposModel extends Model
   public function delete($id)
   {
     try {
-      $query = $this->db->connect()->prepare("DELETE FROM usuarios_tipo WHERE id = ?;");
+      $query = $this->db->connect()->prepare("DELETE FROM usuario_tipos WHERE id = ?;");
       if ($query->execute([$id])) return true;
     } catch (PDOException $e) {
       error_log("UsuarioTiposModel::delete() -> " . $e->getMessage());

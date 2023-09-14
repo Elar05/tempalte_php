@@ -9,7 +9,6 @@ class Controller
   public function __construct()
   {
     $this->view = new View();
-    $this->sites = $this->sites();
   }
 
   public function loadModel($name)
@@ -23,30 +22,7 @@ class Controller
     }
   }
 
-  public function sites()
-  {
-    return [
-      "0" => [
-        'login'
-      ],
-      "1" => [
-        'main', 'logout'
-      ],
-      "2" => [
-        'main', 'logout'
-      ],
-      "3" => [
-        'main', 'logout'
-      ],
-    ];
-  }
-
-  public function hasAccess($view, $tipo)
-  {
-    return in_array($view, $this->sites[$tipo]);
-  }
-
-  function redirect($url, $mensajes = [])
+  public function redirect($url, $mensajes = [])
   {
     $data = [];
     $params = '';
@@ -60,5 +36,12 @@ class Controller
       $params = '?' . $params;
     }
     header('Location: ' . constant('URL') . $url . $params);
+    exit();
+  }
+
+  public function response($data)
+  {
+    echo json_encode($data);
+    exit();
   }
 }

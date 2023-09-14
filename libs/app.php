@@ -10,15 +10,13 @@ class App
     $url = rtrim($url, '/');
     $url = explode('/', $url);
 
-    if (empty($url[0]) && !isset($_SESSION['session'])) {
+    if (empty($url[0])) {
       require_once 'controllers/login.php';
-      $login = new Login();
+      $login = new Login('login');
       $login->loadModel('login');
       $login->render();
       return false;
     }
-
-    if (empty($url[0])) $url[0] = 'main';
 
     // si la url no es null
     $fileController = 'controllers/' . $url[0] . '.php';
@@ -26,38 +24,40 @@ class App
     if (file_exists($fileController)) {
       require_once $fileController;
 
-      $controller = new $url[0];
+      $controller = new $url[0]($url[0]);
       $controller->loadModel($url[0]);
 
-      $tipo = $_SESSION['tipo'] ?? 0;
-
-      if ($controller->hasAccess($url[0], $tipo)) {
-
-        //numero de parametros, o eliemntos del link
-        $parameters = sizeof($url);
-
-        if ($parameters > 1) {
-          if ($parameters > 2) {
-            //array vacio
-            $parametro = [];
-            //hacer un bule para hacer llenar el array
-            for ($i = 2; $i < $parameters; $i++) {
-              //rellenar el array parametro
-              array_push($parametro, $url[$i]);
+      // si hay un metodo
+      if (isset($url[1])) {
+        // validar el metodo
+        if (method_exists($controller, $url[1])) {
+          // Si hay parametros en la url
+          if (isset($url[2])) {
+            $nparam = sizeof($url);
+            $params = [];
+            for ($i = 2; $i < $nparam; $i++) {
+              array_push($params, $url[$i]);
             }
-            //se estipula el url con su array d eparametros
-            $controller->{$url[1]}($parametro); //ruta con parametro
+
+            $controller->{$url[1]}($params);
           } else {
-            $controller->{$url[1]}();
+            $reflection = new ReflectionMethod("{$url[0]}", "{$url[1]}");
+            $parameters = $reflection->getParameters();
+
+            if (count($parameters) > 0 && empty($url[2])) {
+              $controller =  new Errores;
+            } else {
+              $controller->{$url[1]}();
+            }
           }
         } else {
-          $controller->render();
+          $controller = new Errores;
         }
       } else {
-        $controller = new Errores();
+        $controller->render();
       }
     } else {
-      $controller = new Errores();
+      $controller = new Errores;
     }
   }
 }

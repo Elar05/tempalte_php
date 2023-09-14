@@ -1,10 +1,7 @@
 <?php
 
-class Main extends Session
+class Admin extends Session
 {
-  public $model;
-  public $view;
-
   function __construct($url)
   {
     parent::__construct($url);
@@ -12,6 +9,6 @@ class Main extends Session
 
   function render()
   {
-    $this->view->render('main/index');
+    $this->view->render('admin/index');
   }
 }

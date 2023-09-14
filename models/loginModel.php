@@ -7,14 +7,22 @@ class LoginModel extends Model
     parent::__construct();
   }
 
-  public function login($email)
+  public function login($email, $password)
   {
     try {
-      $query = $this->query("SELECT * FROM usuarios WHERE email = '$email';");
-      $query->execute();
-      return $query->fetch(PDO::FETCH_ASSOC);
+      $query = $this->prepare("SELECT * FROM usuarios WHERE email = :email;");
+      $query->execute(["email" => $email]);
+
+      if ($query->rowCount() == 1) {
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        if (password_verify($password, $user['password'])) {
+          return $user;
+        }
+
+        return NULL;
+      }
     } catch (PDOException $e) {
-      error_log("LoginModel -> " . $e->getMessage());
+      error_log("LoginModel::login() -> " . $e->getMessage());
       return false;
     }
   }
