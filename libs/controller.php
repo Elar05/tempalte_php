@@ -4,11 +4,10 @@ class Controller
 {
   public $model;
   public $view;
-  public $sites;
 
-  public function __construct()
+  public function __construct($user, $userType)
   {
-    $this->view = new View();
+    $this->view = new View($user, $userType);
   }
 
   public function loadModel($name)

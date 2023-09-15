@@ -3,6 +3,14 @@
 class View
 {
   public $d;
+  public $user;
+  public $userType;
+
+  public function __construct($user, $userType)
+  {
+    $this->user = $user;
+    $this->userType = $userType;
+  }
 
   public function render($nombre, $data = [])
   {

@@ -11,19 +11,21 @@ class Session extends Controller
 
   public function __construct($url)
   {
-    parent::__construct();
     if (session_status() == PHP_SESSION_NONE) session_start();
-
-    $this->url = $url;
-
-    $this->defaultSite = "main";
-    $this->sites = $this->sites();
 
     $this->userType = $_SESSION["userType"] ?? 0;
     $this->userId = $_SESSION["userId"] ?? "";
     $this->user = $_SESSION["user"] ?? "";
 
+    $this->url = $url;
+
+    $this->defaultSite = "main";
+
+    $this->sites = $this->sites();
+
     $this->validateSession();
+
+    parent::__construct($this->user, $this->userType);
   }
 
   public function sites()
@@ -52,7 +54,8 @@ class Session extends Controller
     if ($this->existsSession()) {
       if ($this->isAuthorized($this->url, $this->userType)) {
       } else {
-        $this->redirect($this->sites[$this->userType]['default']);
+        $this->redirect($this->defaultSite);
+        // $this->redirect($this->sites[$this->userType]['default']);
       }
     } else {
       if ($this->isAuthorized($this->url, $this->userType)) {
@@ -79,7 +82,8 @@ class Session extends Controller
 
   public function isAuthorized($view, $tipo)
   {
-    return in_array($view, $this->sites[$tipo]);
+    // return in_array($view, $this->sites); // Desde bd
+    return in_array($view, $this->sites[$tipo]); // En codigo
   }
 
   public function logout()
