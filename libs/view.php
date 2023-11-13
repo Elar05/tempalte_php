@@ -1,5 +1,7 @@
 <?php
 
+namespace Libs;
+
 class View
 {
   public $d;
@@ -44,7 +46,6 @@ class View
       }
     }
   }
-
 
   private function handleSuccess()
   {

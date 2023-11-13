@@ -1,13 +1,13 @@
 <?php require_once 'views/layout/head.php'; ?>
 
-<link rel="stylesheet" href="<?= URL ?>public/css/style.css">
+<link rel="stylesheet" href="<?= URL ?>/public/css/style.css">
 
 <?php require_once 'views/layout/header.php'; ?>
 
 <div>
 	<?= $this->showMessages() ?>
 
-	<form action="<?= URL ?>login/auth" method="post">
+	<form action="<?= URL ?>/login/auth" method="post">
 		<div>
 			<input type="email" placeholder="Correo" name="email" required>
 		</div>

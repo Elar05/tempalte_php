@@ -1,5 +1,10 @@
 <?php
 
+namespace Libs;
+
+use PDO;
+use PDOException;
+
 class Database
 {
   private $host;

@@ -1,5 +1,10 @@
 <?php
 
+namespace Libs;
+
+use Libs\Controller;
+use Controllers\Errores;
+
 class Session extends Controller
 {
   public $sites;
@@ -32,18 +37,15 @@ class Session extends Controller
   {
     return [
       "0" => [
-        'login'
+        'login',
       ],
       "1" => [
-        "default" => 'admin',
-        'main', 'logout', 'usuario'
+        'main', 'logout', 'user',
       ],
       "2" => [
-        "default" => 'secretaria',
         'main', 'logout',
       ],
       "3" => [
-        "default" => 'tecnico',
         'main', 'logout',
       ],
     ];
@@ -60,7 +62,7 @@ class Session extends Controller
     } else {
       if ($this->isAuthorized($this->url, $this->userType)) {
       } else {
-        new Errores;
+        new Errores();
       }
     }
   }
@@ -73,8 +75,8 @@ class Session extends Controller
   public function initialize($user)
   {
     $_SESSION["userId"] = $user['id'];
-    $_SESSION["userType"] = $user['idtipo_usuario'];
-    $_SESSION["user"] = $user['nombres'];
+    $_SESSION["userType"] = $user['idtype'];
+    $_SESSION["user"] = $user['names'];
 
     $this->redirect($this->defaultSite);
     // $this->redirect($this->sites[$_SESSION["userType"]]['default']);

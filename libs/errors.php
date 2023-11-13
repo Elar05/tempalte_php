@@ -1,9 +1,9 @@
 <?php
 
+namespace Libs;
+
 class Errors
 {
-  //Error/Controller/method - operation
-
   const ERROR_LOGIN_AUTHENTICATE                = "11c37cfab311fdbe2";
   const ERROR_LOGIN_AUTHENTICATE_EMPTY          = "2194ac064912bse67";
   const ERROR_LOGIN_AUTHENTICATE_DATA           = "bcbe63ed846468d4a";

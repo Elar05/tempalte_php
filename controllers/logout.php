@@ -1,5 +1,7 @@
 <?php
 
+use Libs\Session;
+
 class Logout extends Session
 {
   public function __construct($url)

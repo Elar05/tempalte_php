@@ -1,12 +1,14 @@
 <?php
 
+namespace Controllers;
+
+use Libs\Controller;
+
 class Errores extends Controller
 {
-  public $view;
-
-  function __construct()
+  public function __construct()
   {
-    parent::__construct();
+    parent::__construct("", "");
     $this->view->render('errores/index');
     exit();
   }

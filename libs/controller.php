@@ -1,24 +1,16 @@
 <?php
 
+namespace Libs;
+
+use Libs\View;
+
 class Controller
 {
-  public $model;
   public $view;
 
   public function __construct($user, $userType)
   {
     $this->view = new View($user, $userType);
-  }
-
-  public function loadModel($name)
-  {
-    $url = "models/{$name}Model.php";
-
-    if (file_exists($url)) {
-      require $url;
-      $model = "{$name}Model";
-      $this->model = new $model();
-    }
   }
 
   public function redirect($url, $mensajes = [])
@@ -34,7 +26,7 @@ class Controller
     if ($params != '') {
       $params = '?' . $params;
     }
-    header('Location: ' . constant('URL') . $url . $params);
+    header('Location: ' . URL . "/$url$params");
     exit();
   }
 
@@ -42,5 +34,35 @@ class Controller
   {
     echo json_encode($data);
     exit();
+  }
+
+  public function existsPOST($params)
+  {
+    foreach ($params as $param) {
+      if (!isset($_POST[$param])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public function existsGET($params)
+  {
+    foreach ($params as $param) {
+      if (!isset($_GET[$param])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public function getGet($name)
+  {
+    return $_GET[$name];
+  }
+
+  public function getPost($name)
+  {
+    return $_POST[$name];
   }
 }

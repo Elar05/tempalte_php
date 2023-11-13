@@ -1,30 +1,32 @@
 <?php
 
+use Models\LoginModel;
+use Libs\Session;
+use Libs\Errors;
+
 class Login extends Session
 {
   public $model;
-  public $view;
 
   public function __construct($url)
   {
     parent::__construct($url);
+
+    $this->model = new LoginModel;
   }
 
   public function render()
   {
-    $this->view->render('login/index', ["message" => ""]);
+    $this->view->render('login/index');
   }
 
   public function auth()
   {
-    if (
-      !isset($_POST['email']) || !isset($_POST['password']) ||
-      empty($_POST['email']) || empty($_POST['password'])
-    ) {
+    if (!$this->existsPOST(['email', 'password'])) {
       $this->redirect('', ["error" => Errors::ERROR_LOGIN_AUTHENTICATE_EMPTY]);
     }
 
-    $user = $this->model->login($_POST['email'], $_POST['password']);
+    $user = $this->model->login($this->getPost('email'), $this->getPost('password'));
 
     if ($user !== NULL) {
       $this->initialize($user);

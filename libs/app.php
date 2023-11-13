@@ -1,6 +1,6 @@
 <?php
 
-require_once 'controllers/errores.php';
+use Controllers\Errores;
 
 class App
 {
@@ -13,7 +13,6 @@ class App
     if (empty($url[0])) {
       require_once 'controllers/login.php';
       $login = new Login('login');
-      $login->loadModel('login');
       $login->render();
       return false;
     }
@@ -25,7 +24,6 @@ class App
       require_once $fileController;
 
       $controller = new $url[0]($url[0]);
-      $controller->loadModel($url[0]);
 
       // si hay un metodo
       if (isset($url[1])) {
@@ -45,19 +43,19 @@ class App
             $parameters = $reflection->getParameters();
 
             if (count($parameters) > 0 && empty($url[2])) {
-              $controller =  new Errores;
+              new Errores();
             } else {
               $controller->{$url[1]}();
             }
           }
         } else {
-          $controller = new Errores;
+          new Errores();
         }
       } else {
         $controller->render();
       }
     } else {
-      $controller = new Errores;
+      new Errores();
     }
   }
 }

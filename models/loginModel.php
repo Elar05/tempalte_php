@@ -1,5 +1,11 @@
 <?php
 
+namespace Models;
+
+use PDO;
+use Libs\Model;
+use PDOException;
+
 class LoginModel extends Model
 {
   public function __construct()
@@ -10,7 +16,7 @@ class LoginModel extends Model
   public function login($email, $password)
   {
     try {
-      $query = $this->prepare("SELECT * FROM usuarios WHERE email = :email;");
+      $query = $this->prepare("SELECT * FROM users WHERE email = :email;");
       $query->execute(["email" => $email]);
 
       if ($query->rowCount() == 1) {

@@ -1,16 +1,15 @@
 <?php
 
+use Libs\Session;
+
 class Main extends Session
 {
-  public $model;
-  public $view;
-
-  function __construct($url)
+  public function __construct($url)
   {
     parent::__construct($url);
   }
 
-  function render()
+  public function render()
   {
     $this->view->render('main/index');
   }
