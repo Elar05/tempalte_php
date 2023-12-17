@@ -19,16 +19,19 @@ class View
     $this->d = $data;
     $this->handleMessages();
     require 'views/' . $nombre . '.php';
+    exit;
   }
 
   private function handleMessages()
   {
     if (isset($_GET['success']) && isset($_GET['error'])) {
       // no se muestra nada porque no puede haber un error y success al mismo tiempo
-    } else if (isset($_GET['success'])) {
+    } elseif (isset($_GET['success'])) {
       $this->handleSuccess();
-    } else if (isset($_GET['error'])) {
+    } elseif (isset($_GET['error'])) {
       $this->handleError();
+    } elseif (isset($_GET['message'])) {
+      $this->handleMessage();
     }
   }
 
@@ -62,10 +65,18 @@ class View
     }
   }
 
+  private function handleMessage()
+  {
+    if (isset($_GET['message'])) {
+      $this->d['message'] = $_GET['message'];
+    }
+  }
+
   public function showMessages()
   {
     $this->showError();
     $this->showSuccess();
+    $this->showMessage();
   }
 
   public function showError()
@@ -80,5 +91,17 @@ class View
     if (array_key_exists('success', $this->d)) {
       echo '<div class="alert alert-success">' . $this->d['success'] . '</div>';
     }
+  }
+
+  public function showMessage()
+  {
+    if (array_key_exists('message', $this->d)) {
+      echo '<div class="alert alert-info">' . $this->decrypt($this->d['message']) . '</div>';
+    }
+  }
+
+  public function decrypt($value)
+  {
+    return base64_decode($value);
   }
 }

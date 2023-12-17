@@ -1,6 +1,7 @@
 <?php
 
 use Controllers\Errores;
+use Controllers\Login;
 
 class App
 {
@@ -11,19 +12,16 @@ class App
     $url = explode('/', $url);
 
     if (empty($url[0])) {
-      require_once 'controllers/login.php';
       $login = new Login('login');
       $login->render();
-      return false;
     }
 
     // si la url no es null
     $fileController = 'controllers/' . $url[0] . '.php';
     //condicional, si es que exites un archivo en esta rita
+    $nameController = 'Controllers\\' . ucfirst($url[0]);
     if (file_exists($fileController)) {
-      require_once $fileController;
-
-      $controller = new $url[0]($url[0]);
+      $controller = new $nameController($url[0]);
 
       // si hay un metodo
       if (isset($url[1])) {
@@ -39,7 +37,7 @@ class App
 
             $controller->{$url[1]}($params);
           } else {
-            $reflection = new ReflectionMethod("{$url[0]}", "{$url[1]}");
+            $reflection = new ReflectionMethod($nameController, "{$url[1]}");
             $parameters = $reflection->getParameters();
 
             if (count($parameters) > 0 && empty($url[2])) {

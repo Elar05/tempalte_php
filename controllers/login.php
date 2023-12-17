@@ -1,5 +1,7 @@
 <?php
 
+namespace Controllers;
+
 use Models\LoginModel;
 use Libs\Session;
 use Libs\Errors;
@@ -26,7 +28,7 @@ class Login extends Session
       $this->redirect('', ["error" => Errors::ERROR_LOGIN_AUTHENTICATE_EMPTY]);
     }
 
-    $user = $this->model->login($this->getPost('email'), $this->getPost('password'));
+    $user = $this->model->login($_POST['email'], $_POST['password']);
 
     if ($user !== NULL) {
       $this->initialize($user);

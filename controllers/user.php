@@ -1,5 +1,7 @@
 <?php
 
+namespace Controllers;
+
 use Libs\Session;
 use Models\UserModel;
 
